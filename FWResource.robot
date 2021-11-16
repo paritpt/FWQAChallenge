@@ -1,6 +1,7 @@
 *** Variables ***
 
 ${urlFastwork}  https://staging.fastwork.co
+${urlFastworkSearch}  https://staging.fastwork.co/search
 ${btnLogin}  //a[@id="login-link"]
 ${btnSignUp}  //a[@href="/oauth/signup"]
 ${inpUserName}  //input[@id="signup-request-username"]
@@ -26,10 +27,19 @@ ${btnNext}  //button[@class="VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-Lgb
 ${inpGooglePhoneNo}  //*[@id="phoneNumberId"]
 ${inpGoogleSignup}  //input[@type="email"]
 ${btnConfirmGoogleSignUp}  //button[@class="signup-btn tb-button -fluid _ffml-kanit btn-ff"]
-${cookieConsent}  //div[@class="cookie-consent-bar"]
+${iBell}  //i[@class="tb-icon fas fa-bell"]
 ${errorEmailAlreadyExist}  //div[@class="invalid-feedback help-block"]
+${inpEmailSignin}  //input[@type="text"]
+${btnNextSighup}  //button[@class="tb-button -fluid _mgt-12px"]
+${urlFastworkSearch}  https://staging.fastwork.co/search
+${inpPasswordSignIn}  //input[@id="signin-request-Password"]
+${btnSignIn}  //button[@class="tb-button -fluid"]
+${inpSearch}  //input[@data-selenium="navigation-bar.input.search"]
+${labelSearch}  //div[@class="u-halign-split"]//div//strong
+${labelSearchNotFound}  //div[@class="u-halign-split"]//div
+${cardProduct}  //div//a[@rel="noopener noreferrer"]
 
-#testdata for Sign Up With Google Account
+#testdata for Sign Up With Google Account and Sign In With Email Account and Sign In With Google Account
 ${txtUserName}  paritbutqap
 ${txtFirstName}  parit
 ${txtLastName}  butqa
@@ -37,23 +47,31 @@ ${txtEmail}  paritbutqa.p@gmail.com
 ${txtPassword}  paritbutqa666
 ${txtPhoneNo}  0947849669
 
+#testdata for Sign Up With Email Account
+${txtUserNameE}  paritbutqapp
+${txtEmailE}  paritbutqa.pp@gmail.com
 
-
+#testdata for Testcase3
+${txtSearch}  แบมแบม
+${txtSearchNotFound}  llumllum
 *** Keywords ***
 
-Initialize
+Open Fastwork
     Open Browser  ${urlFastwork}   Chrome
-
 CloseDown
     Close Browser
+Open Fastwork Search
+    Open Browser  ${urlFastworkSearch}   Chrome
+
 
 Sign Up With Email Account
+    Open Fastwork
     click link  ${btnLogin}
     click link  ${btnSignUp}
-    input text  ${inpUserName}  ${txtUserName}
+    input text  ${inpUserName}  ${txtUserNameE}
     input text  ${inpFirstName}  ${txtFirstName}
     input text  ${inpLastName}  ${txtLastName}
-    input text  ${inpEmail}  ${txtEmail}
+    input text  ${inpEmail}  ${txtEmailE}
     input text  ${inpPassword}  ${txtPassword}
     input text  ${inpConfPassword}  ${txtPassword}
     input text  ${inpPhoneNo}  ${txtPhoneNo}
@@ -62,7 +80,10 @@ Sign Up With Email Account
 #   click button  ${chkboxMKTConsent}
     click button  ${btnConfirmSignUp}
     Element should be visible  ${formConfirmEmail}
+    CloseDown
+
 Sign up with email account that had been registered
+    Open Fastwork
     click link  ${btnLogin}
     click link  ${btnSignUp}
     input text  ${inpUserName}  ${txtUserName}
@@ -77,9 +98,10 @@ Sign up with email account that had been registered
 #   click button  ${chkboxMKTConsent}
     click button  ${btnConfirmSignUp}
     Element should be visible  ${errorEmailAlreadyExist}
-
+    CloseDown
 
 Sign Up With Google Account
+    Open Fastwork
     click link  ${btnLogin}
     click link  ${btnSignUp}
     click link  ${btnGoogleSignin}
@@ -92,12 +114,23 @@ Sign Up With Google Account
     click button  ${chkboxTCConsent}
     click button  ${chkboxPPConsent}
     click button  ${btnConfirmGoogleSignUp}
-    Sleep  2s
-    Wait Until Element Is Visible  ${cookieConsent}
+    Sleep  3s
+    Wait Until Element Is Visible  ${iBell}
+    CloseDown
 
+Sign In With Email Account
+    Open Fastwork
+    click link  ${btnLogin}
+    input text  ${inpEmailSignin}  ${txtEmail}
+    click button  ${btnNextSighup}
+    input text  ${inpPasswordSignIn}  ${txtPassword}
+    click button  ${btnSignIn}
+    Sleep  3s
+    Wait Until Element Is Visible  ${iBell}
+    CloseDown
 
 Sign In With Google Account
-    Go to  ${urlFastwork}
+    Open Fastwork
     click link  ${btnLogin}
     click link  ${btnGoogleSignin}
     input text  ${inpGoogleSignup}  ${txtEmail}
@@ -105,6 +138,21 @@ Sign In With Google Account
     Wait Until Element Is Visible  ${inpGooglePassword}
     input text  ${inpGooglePassword}  ${txtPassword}
     click button  ${btnNext}
-    Sleep  2s
-    Wait Until Element Is Visible  ${cookieConsent}
+    Sleep  3s
+    Wait Until Element Is Visible  ${iBell}
+    CloseDown
+
+Search by typing keyword
+    Open Fastwork Search
+    Input Text  ${inpSearch}  ${txtSearch}
+    Press Keys  ${inpSearch}  ENTER
+    Wait Until Element Contains  ${labelSearch}  ${txtSearch}
+    Wait Until Element Is Visible  ${cardProduct}
+Search by typing keyword that doesn't exist
+    Input Text  ${inpSearch}  ${txtSearchNotFound}
+    Press Keys  ${inpSearch}  ENTER
+    Wait Until Element Contains  ${labelSearch}  ${txtSearchNotFound}
+    Wait Until Element Contains  ${labelSearchNotFound}  0
+    CloseDown
+
 
