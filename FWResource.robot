@@ -1,29 +1,48 @@
 *** Variables ***
+
+${urlFastwork}  https://staging.fastwork.co
 ${btnLogin}  //a[@id="login-link"]
 ${btnSignUp}  //a[@href="/oauth/signup"]
 ${inpUserName}  //input[@id="signup-request-username"]
-${txtUserName}  paritbutqap
 ${inpFirstName}  //input[@id="signup-request-first_name"]
-${txtFirstName}  parit
 ${inpLastName}  //input[@id="signup-request-last_name"]
-${txtLastName}  butqa
 ${inpEmail}  //input[@id="signup-request-email"]
-${txtEmail}  paritbutqa.p@gmail.com
 ${inpPassword}  //input[@id="signup-request-password"]
-${txtPassword}  paritbutqa.666
 ${inpConfPassword}  //input[@id="signup-request-confirm_password"]
-${txtConfPassword}  paritbutqa.666
 ${inpPhoneNo}  //input[@id="signup-request-phone_number"]
-${txtPhoneNo}  0947849669
 ${chkboxTCConsent}  //input[@id="post-TCConsent"]
 ${chkboxPPConsent}  //input[@id="post-PPConsent"]
 ${chkboxMKTConsent}  //input[@id="post-MKTConsent"]
-${btmConfirmSignUp}  //button[@class="signup-btn tb-button -fluid _mgt-24px"]
+${btnConfirmSignUp}  //button[@class="signup-btn tb-button -fluid _mgt-24px"]
 ${formConfirmEmail}  //form[@id="verify-account-request-form"]
+${btnGoogleSignin}  //a[@href="/auth/google"]
+${btnGoogleSignup}  //button[@class="VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-dgl2Hf ksBjEc lKxP2d uRo0Xe TrZEUc lw1w4b"]
+${inpGoogleFirstName}  //input[@id="firstName"]
+${inpGoogleLastName}  //input[@id="lastName"]
+${inpGoogleUserName}  //input[@id="username"]
+${inpGooglePassword}  //input[@type="password"]
+${inpGoogleConfirmPassword}  //input[@name="ConfirmPasswd"]
+${btnNext}  //button[@class="VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-LgbsSe-OWXEXe-dgl2Hf nCP5yc AjY5Oe DuMIQc qIypjc TrZEUc lw1w4b"]
+${inpGooglePhoneNo}  //*[@id="phoneNumberId"]
+${inpGoogleSignup}  //input[@type="email"]
+${btnConfirmGoogleSignUp}  //button[@class="signup-btn tb-button -fluid _ffml-kanit btn-ff"]
+${cookieConsent}  //div[@class="cookie-consent-bar"]
+${errorEmailAlreadyExist}  //div[@class="invalid-feedback help-block"]
+
+#testdata for Sign Up With Google Account
+${txtUserName}  paritbutqap
+${txtFirstName}  parit
+${txtLastName}  butqa
+${txtEmail}  paritbutqa.p@gmail.com
+${txtPassword}  paritbutqa666
+${txtPhoneNo}  0947849669
+
+
 
 *** Keywords ***
+
 Initialize
-    Open Browser  https://staging.fastwork.co   Chrome
+    Open Browser  ${urlFastwork}   Chrome
 
 CloseDown
     Close Browser
@@ -36,12 +55,56 @@ Sign Up With Email Account
     input text  ${inpLastName}  ${txtLastName}
     input text  ${inpEmail}  ${txtEmail}
     input text  ${inpPassword}  ${txtPassword}
-    input text  ${inpConfPassword}  ${txtConfPassword}
+    input text  ${inpConfPassword}  ${txtPassword}
     input text  ${inpPhoneNo}  ${txtPhoneNo}
     click button  ${chkboxTCConsent}
     click button  ${chkboxPPConsent}
-    click button  ${chkboxMKTConsent}
-    click button  ${btmConfirmSignUp}
+#   click button  ${chkboxMKTConsent}
+    click button  ${btnConfirmSignUp}
     Element should be visible  ${formConfirmEmail}
+Sign up with email account that had been registered
+    click link  ${btnLogin}
+    click link  ${btnSignUp}
+    input text  ${inpUserName}  ${txtUserName}
+    input text  ${inpFirstName}  ${txtFirstName}
+    input text  ${inpLastName}  ${txtLastName}
+    input text  ${inpEmail}  ${txtEmail}
+    input text  ${inpPassword}  ${txtPassword}
+    input text  ${inpConfPassword}  ${txtPassword}
+    input text  ${inpPhoneNo}  ${txtPhoneNo}
+    click button  ${chkboxTCConsent}
+    click button  ${chkboxPPConsent}
+#   click button  ${chkboxMKTConsent}
+    click button  ${btnConfirmSignUp}
+    Element should be visible  ${errorEmailAlreadyExist}
 
-#Sign Up WIth Google Account
+
+Sign Up With Google Account
+    click link  ${btnLogin}
+    click link  ${btnSignUp}
+    click link  ${btnGoogleSignin}
+    input text  ${inpGoogleSignup}  ${txtEmail}
+    click button  ${btnNext}
+    Wait Until Element Is Visible  ${inpGooglePassword}
+    input text  ${inpGooglePassword}  ${txtPassword}
+    click button  ${btnNext}
+    Wait Until Element Is Visible  ${chkboxTCConsent}
+    click button  ${chkboxTCConsent}
+    click button  ${chkboxPPConsent}
+    click button  ${btnConfirmGoogleSignUp}
+    Sleep  2s
+    Wait Until Element Is Visible  ${cookieConsent}
+
+
+Sign In With Google Account
+    Go to  ${urlFastwork}
+    click link  ${btnLogin}
+    click link  ${btnGoogleSignin}
+    input text  ${inpGoogleSignup}  ${txtEmail}
+    click button  ${btnNext}
+    Wait Until Element Is Visible  ${inpGooglePassword}
+    input text  ${inpGooglePassword}  ${txtPassword}
+    click button  ${btnNext}
+    Sleep  2s
+    Wait Until Element Is Visible  ${cookieConsent}
+
