@@ -2,8 +2,7 @@
 
 Library   SeleniumLibrary
 Resource  FWResource.robot
-#Suite Setup  Open Fastwork
-#Suite Teardown  CloseDown
+
 
 
 *** Test Cases ***
@@ -17,6 +16,9 @@ Testcase2-Signin_Fastwork
      Sign In With Email Account
      Sign In With Google Account
 
-Testcase3-Testcase3-Testcase3-Search_System
+Testcase3-Search_System
     Search by typing keyword
+    Filter professional badge
+    Filter รับแบ่งชำระ badge
+    Filter professional badge + รับแบ่งชำระ badge
     Search by typing keyword that doesn't exist

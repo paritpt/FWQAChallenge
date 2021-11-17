@@ -37,7 +37,16 @@ ${btnSignIn}  //button[@class="tb-button -fluid"]
 ${inpSearch}  //input[@data-selenium="navigation-bar.input.search"]
 ${labelSearch}  //div[@class="u-halign-split"]//div//strong
 ${labelSearchNotFound}  //div[@class="u-halign-split"]//div
-${cardProduct}  //div//a[@rel="noopener noreferrer"]
+${cardProduct}  //div//a[@class="tb-card-product -animate card-product _cs-pt -has-border-color"]
+${chkboxProfessional}  //input[@id="badges_Professional"]
+${labelProfessional}  //img[@src="https://storage.googleapis.com/fastwork-asset/product_options/badge_professional_x3.png"]
+${chkboxรับแบ่งชำระ}  //input[@id="badges_จ้างงานแบบแบ่งชำระ"]
+${labelรับแบ่งชำระ}  //img[@src="https://storage.googleapis.com/fastwork-asset/product_options/badge_milestone_thai_x3.png"]
+${labelCheck}  //div[@class=class="_dp-f _fw-w _mnh-16px"]
+${lnkTrend}  เทรนด์มาแรง
+${labelTrend}  //h1[@class="_fs-900"]
+${lnkGraphicAndDesign}  //a[href="/design-graphic"]
+${lnkWriteAndTranslate}  //a[@href="/writing-translation"]
 
 #testdata for Sign Up With Google Account and Sign In With Email Account and Sign In With Google Account
 ${txtUserName}  paritbutqap
@@ -52,13 +61,16 @@ ${txtUserNameE}  paritbutqapp
 ${txtEmailE}  paritbutqa.pp@gmail.com
 
 #testdata for Testcase3
-${txtSearch}  แบมแบม
+${txtSearch}  game
 ${txtSearchNotFound}  llumllum
+#${txtSearch+Pro+แบ่ง}  เซฮุน
+
+
 *** Keywords ***
 
 Open Fastwork
     Open Browser  ${urlFastwork}   Chrome
-CloseDown
+Close Down
     Close Browser
 Open Fastwork Search
     Open Browser  ${urlFastworkSearch}   Chrome
@@ -80,7 +92,7 @@ Sign Up With Email Account
 #   click button  ${chkboxMKTConsent}
     click button  ${btnConfirmSignUp}
     Element should be visible  ${formConfirmEmail}
-    CloseDown
+    Close Down
 
 Sign up with email account that had been registered
     Open Fastwork
@@ -98,7 +110,7 @@ Sign up with email account that had been registered
 #   click button  ${chkboxMKTConsent}
     click button  ${btnConfirmSignUp}
     Element should be visible  ${errorEmailAlreadyExist}
-    CloseDown
+    Close Down
 
 Sign Up With Google Account
     Open Fastwork
@@ -116,7 +128,7 @@ Sign Up With Google Account
     click button  ${btnConfirmGoogleSignUp}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
-    CloseDown
+    Close Down
 
 Sign In With Email Account
     Open Fastwork
@@ -127,7 +139,7 @@ Sign In With Email Account
     click button  ${btnSignIn}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
-    CloseDown
+    Close Down
 
 Sign In With Google Account
     Open Fastwork
@@ -140,19 +152,55 @@ Sign In With Google Account
     click button  ${btnNext}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
-    CloseDown
+    Close Down
 
 Search by typing keyword
     Open Fastwork Search
+    Maximize Browser Window
     Input Text  ${inpSearch}  ${txtSearch}
     Press Keys  ${inpSearch}  ENTER
     Wait Until Element Contains  ${labelSearch}  ${txtSearch}
     Wait Until Element Is Visible  ${cardProduct}
+Filter professional badge
+    click button  ${chkboxProfessional}
+    Wait Until Element Is Visible  ${cardProduct}
+    click element  ${cardProduct}
+    Switch Window  NEW
+    Wait Until Element Is Visible  ${labelProfessional}
+    Close Window
+    Switch Window       MAIN
+    click button  ${chkboxProfessional}
+Filter รับแบ่งชำระ badge
+    click button  ${chkboxรับแบ่งชำระ}
+    Wait Until Element Is Visible  ${cardProduct}
+    click element  ${cardProduct}
+    Switch Window  NEW
+    Wait Until Element Is Visible  ${labelรับแบ่งชำระ}
+    Close Window
+    Switch Window       MAIN
+    click button  ${chkboxรับแบ่งชำระ}
+Filter professional badge + รับแบ่งชำระ badge
+#    Open Fastwork Search
+#    Maximize Browser Window
+    Input Text  ${inpSearch}  ${txtSearch}
+    Press Keys  ${inpSearch}  ENTER
+    Wait Until Element Contains  ${labelSearch}  ${txtSearch}
+    Wait Until Element Is Visible  ${cardProduct}
+    click button  ${chkboxProfessional}
+    click button  ${chkboxรับแบ่งชำระ}
+    Wait Until Element Is Visible  ${cardProduct}
+    click element  ${cardProduct}
+    Switch Window  NEW
+    Wait Until Element Is Visible  ${labelรับแบ่งชำระ}
+    Wait Until Element Is Visible  ${labelProfessional}
+    Close Window
+    Switch Window       MAIN
+    click button  ${chkboxรับแบ่งชำระ}
+    click button  ${chkboxProfessional}
 Search by typing keyword that doesn't exist
     Input Text  ${inpSearch}  ${txtSearchNotFound}
     Press Keys  ${inpSearch}  ENTER
     Wait Until Element Contains  ${labelSearch}  ${txtSearchNotFound}
     Wait Until Element Contains  ${labelSearchNotFound}  0
-    CloseDown
-
+    Close Down
 
