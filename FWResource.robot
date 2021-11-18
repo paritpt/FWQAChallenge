@@ -30,7 +30,7 @@ ${btnConfirmGoogleSignUp}  //button[@class="signup-btn tb-button -fluid _ffml-ka
 ${iBell}  //i[@class="tb-icon fas fa-bell"]
 ${errorEmailAlreadyExist}  //div[@class="invalid-feedback help-block"]
 ${inpEmailSignin}  //input[@type="text"]
-${btnNextSighup}  //button[@class="tb-button -fluid _mgt-12px"]
+${btnNextSignIn}  //button[@class="tb-button -fluid _mgt-12px"]
 ${urlFastworkSearch}  https://staging.fastwork.co/search
 ${inpPasswordSignIn}  //input[@id="signin-request-Password"]
 ${btnSignIn}  //button[@class="tb-button -fluid"]
@@ -68,6 +68,16 @@ Open Fastwork
     Open Browser  ${urlFastwork}   Chrome
 Open Fastwork Search
     Open Browser  ${urlFastworkSearch}   Chrome
+Confirm Sign Up
+    [Arguments]  ${consent1}  ${consent2}  ${signupButton}
+    click button  ${consent1}
+    click button  ${consent2}
+    click button  ${signupButton}
+Search Keykwords
+    [Arguments]  ${searchInput}  ${searchText}  ${searchLabel}
+    Input Text  ${searchInput}  ${searchText}
+    Press Keys  ${searchInput}  ENTER
+    Wait Until Element Contains  ${searchLabel}  ${searchText}
 
 #Testcase1
 Sign Up With Email Account
@@ -81,10 +91,7 @@ Sign Up With Email Account
     input text  ${inpPassword}  ${txtPassword}
     input text  ${inpConfPassword}  ${txtPassword}
     input text  ${inpPhoneNo}  ${txtPhoneNo}
-    click button  ${chkboxTCConsent}
-    click button  ${chkboxPPConsent}
-#   click button  ${chkboxMKTConsent}
-    click button  ${btnConfirmSignUp}
+    Confirm Sign Up  ${chkboxTCConsent}  ${chkboxPPConsent}  ${btnConfirmSignUp}
     Element should be visible  ${formConfirmEmail}
     Close Browser
 
@@ -99,10 +106,7 @@ Sign up with email account that had been registered
     input text  ${inpPassword}  ${txtPassword}
     input text  ${inpConfPassword}  ${txtPassword}
     input text  ${inpPhoneNo}  ${txtPhoneNo}
-    click button  ${chkboxTCConsent}
-    click button  ${chkboxPPConsent}
-#   click button  ${chkboxMKTConsent}
-    click button  ${btnConfirmSignUp}
+    Confirm Sign Up  ${chkboxTCConsent}  ${chkboxPPConsent}  ${btnConfirmSignUp}
     Element should be visible  ${errorEmailAlreadyExist}
     Close Browser
 
@@ -117,9 +121,7 @@ Sign Up With Google Account
     input text  ${inpGooglePassword}  @{txtGmailPassword}
     click button  ${btnNext}
     Wait Until Element Is Visible  ${chkboxTCConsent}
-    click button  ${chkboxTCConsent}
-    click button  ${chkboxPPConsent}
-    click button  ${btnConfirmGoogleSignUp}
+    Confirm Sign Up  ${chkboxTCConsent}  ${chkboxPPConsent}  ${btnConfirmGoogleSignUp}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
     Close Browser
@@ -129,7 +131,7 @@ Sign In With Email Account
     Open Fastwork
     click link  ${btnLogin}
     input text  ${inpEmailSignin}  ${txtEmail}
-    click button  ${btnNextSighup}
+    click button  ${btnNextSignIn}
     input text  ${inpPasswordSignIn}  ${txtPassword}
     click button  ${btnSignIn}
     Sleep  3s
@@ -140,14 +142,14 @@ Sign in with Email Account : wrong email
     Open Fastwork
     click link  ${btnLogin}
     input text  ${inpEmailSignin}  ${txtEmailWrong}
-    click button  ${btnNextSighup}
+    click button  ${btnNextSignIn}
     Element should be visible  ${errorEmailAlreadyExist}
     Close Browser
 Sign in with Email account : Wrong password
     Open Fastwork
     click link  ${btnLogin}
     input text  ${inpEmailSignin}  ${txtEmail}
-    click button  ${btnNextSighup}
+    click button  ${btnNextSignIn}
     input text  ${inpPasswordSignIn}  @{txtGmailPassword}
     click button  ${btnSignIn}
     Element should be visible  ${errorEmailAlreadyExist}
@@ -169,9 +171,7 @@ Sign In With Google Account
 Search by typing keyword
     Open Fastwork Search
     Maximize Browser Window
-    Input Text  ${inpSearch}  ${txtSearch}
-    Press Keys  ${inpSearch}  ENTER
-    Wait Until Element Contains  ${labelSearch}  ${txtSearch}
+    Search Keykwords  ${inpSearch}  ${txtSearch}  ${labelSearch}
     Wait Until Element Is Visible  ${cardProduct}
 Filter professional badge
     click button  ${chkboxProfessional}
@@ -192,11 +192,7 @@ Filter รับแบ่งชำระ badge
     Switch Window       MAIN
     click button  ${chkboxรับแบ่งชำระ}
 Filter professional badge + รับแบ่งชำระ badge
-#    Open Fastwork Search
-#    Maximize Browser Window
-    Input Text  ${inpSearch}  ${txtSearch}
-    Press Keys  ${inpSearch}  ENTER
-    Wait Until Element Contains  ${labelSearch}  ${txtSearch}
+    Search Keykwords  ${inpSearch}  ${txtSearch}  ${labelSearch}
     Wait Until Element Is Visible  ${cardProduct}
     click button  ${chkboxProfessional}
     click button  ${chkboxรับแบ่งชำระ}
@@ -210,9 +206,7 @@ Filter professional badge + รับแบ่งชำระ badge
     click button  ${chkboxรับแบ่งชำระ}
     click button  ${chkboxProfessional}
 Search by typing keyword that doesn't exist
-    Input Text  ${inpSearch}  ${txtSearchNotFound}
-    Press Keys  ${inpSearch}  ENTER
-    Wait Until Element Contains  ${labelSearch}  ${txtSearchNotFound}
+    Search Keykwords  ${inpSearch}  ${txtSearchNotFound}  ${labelSearch}
     Wait Until Element Contains  ${labelSearchNotFound}  0
     Close Browser
 
