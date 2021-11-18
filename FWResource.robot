@@ -47,40 +47,34 @@ ${lnkTrend}  เทรนด์มาแรง
 ${labelTrend}  //h1[@class="_fs-900"]
 ${lnkGraphicAndDesign}  //a[href="/design-graphic"]
 ${lnkWriteAndTranslate}  //a[@href="/writing-translation"]
-
-#testdata for Sign Up With Google Account and Sign In With Email Account and Sign In With Google Account
+#Testdata for register and login
 ${txtUserName}  paritbutqap
 ${txtFirstName}  parit
 ${txtLastName}  butqa
-${txtEmail}  paritbutqa.p@gmail.com
+${txtEmailE}  paritbutqa.pp@gmail.com
 ${txtPassword}  paritbutqa666
 ${txtPhoneNo}  0947849669
-
-#testdata for Sign Up With Email Account
-${txtUserNameE}  paritbutqapp
-${txtEmailE}  paritbutqa.pp@gmail.com
-
-#testdata for Testcase3
+${txtEmail}  paritbutqa.p@gmail.com
+${txtGmail}  paaritbutqa.p@gmail.com
+@{txtGmailPassword}  paritbutqa.666
+${txtEmailWrong}  paritbutqa.p@gmail.con
+#Testdata for search
 ${txtSearch}  game
 ${txtSearchNotFound}  llumllum
-#${txtSearch+Pro+แบ่ง}  เซฮุน
-
 
 *** Keywords ***
 
 Open Fastwork
     Open Browser  ${urlFastwork}   Chrome
-Close Down
-    Close Browser
 Open Fastwork Search
     Open Browser  ${urlFastworkSearch}   Chrome
 
-
+#Testcase1
 Sign Up With Email Account
     Open Fastwork
     click link  ${btnLogin}
     click link  ${btnSignUp}
-    input text  ${inpUserName}  ${txtUserNameE}
+    input text  ${inpUserName}  ${txtUserName}
     input text  ${inpFirstName}  ${txtFirstName}
     input text  ${inpLastName}  ${txtLastName}
     input text  ${inpEmail}  ${txtEmailE}
@@ -92,7 +86,7 @@ Sign Up With Email Account
 #   click button  ${chkboxMKTConsent}
     click button  ${btnConfirmSignUp}
     Element should be visible  ${formConfirmEmail}
-    Close Down
+    Close Browser
 
 Sign up with email account that had been registered
     Open Fastwork
@@ -110,17 +104,17 @@ Sign up with email account that had been registered
 #   click button  ${chkboxMKTConsent}
     click button  ${btnConfirmSignUp}
     Element should be visible  ${errorEmailAlreadyExist}
-    Close Down
+    Close Browser
 
 Sign Up With Google Account
     Open Fastwork
     click link  ${btnLogin}
     click link  ${btnSignUp}
     click link  ${btnGoogleSignin}
-    input text  ${inpGoogleSignup}  ${txtEmail}
+    input text  ${inpGoogleSignup}  ${txtGmail}
     click button  ${btnNext}
     Wait Until Element Is Visible  ${inpGooglePassword}
-    input text  ${inpGooglePassword}  ${txtPassword}
+    input text  ${inpGooglePassword}  @{txtGmailPassword}
     click button  ${btnNext}
     Wait Until Element Is Visible  ${chkboxTCConsent}
     click button  ${chkboxTCConsent}
@@ -128,8 +122,9 @@ Sign Up With Google Account
     click button  ${btnConfirmGoogleSignUp}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
-    Close Down
+    Close Browser
 
+#Testcase2
 Sign In With Email Account
     Open Fastwork
     click link  ${btnLogin}
@@ -139,8 +134,24 @@ Sign In With Email Account
     click button  ${btnSignIn}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
-    Close Down
+    Close Browser
 
+Sign in with Email Account : wrong email
+    Open Fastwork
+    click link  ${btnLogin}
+    input text  ${inpEmailSignin}  ${txtEmailWrong}
+    click button  ${btnNextSighup}
+    Element should be visible  ${errorEmailAlreadyExist}
+    Close Browser
+Sign in with Email account : Wrong password
+    Open Fastwork
+    click link  ${btnLogin}
+    input text  ${inpEmailSignin}  ${txtEmail}
+    click button  ${btnNextSighup}
+    input text  ${inpPasswordSignIn}  @{txtGmailPassword}
+    click button  ${btnSignIn}
+    Element should be visible  ${errorEmailAlreadyExist}
+    Close Browser
 Sign In With Google Account
     Open Fastwork
     click link  ${btnLogin}
@@ -152,8 +163,9 @@ Sign In With Google Account
     click button  ${btnNext}
     Sleep  3s
     Wait Until Element Is Visible  ${iBell}
-    Close Down
+    Close Browser
 
+#Testcase3
 Search by typing keyword
     Open Fastwork Search
     Maximize Browser Window
@@ -202,5 +214,5 @@ Search by typing keyword that doesn't exist
     Press Keys  ${inpSearch}  ENTER
     Wait Until Element Contains  ${labelSearch}  ${txtSearchNotFound}
     Wait Until Element Contains  ${labelSearchNotFound}  0
-    Close Down
+    Close Browser
 

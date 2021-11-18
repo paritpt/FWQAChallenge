@@ -3,17 +3,17 @@
 Library   SeleniumLibrary
 Resource  FWResource.robot
 
-
-
 *** Test Cases ***
 
 Testcase1-Register_Fastwork
     Sign Up With Email Account
     Sign up with email account that had been registered
-#    Sign Up With Google Account            req new test data
+    Sign Up With Google Account
 
 Testcase2-Signin_Fastwork
      Sign In With Email Account
+     Sign in with Email Account : wrong email
+     Sign in with Email account : Wrong password
      Sign In With Google Account
 
 Testcase3-Search_System
